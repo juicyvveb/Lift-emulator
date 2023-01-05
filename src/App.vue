@@ -1,47 +1,71 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
   <main>
-    <TheWelcome />
+    <div class="input">
+      <h3 class="input__title">Levels' count:</h3>
+      <input
+        class="input__input"
+        type="number"
+        :value="levels_count"
+        placeholder="count of levels"
+        @input="handleLevelsCount" />
+    </div>
+
+    <div class="input">
+      <h3 class="input__title">Lifts' count:</h3>
+      <input
+        type="number"
+        :value="lifts_count"
+        placeholder="count of lifts"
+        @input="handleLiftsCount" />
+    </div>
+
+    <Shaft
+      :levels="levels_count"
+      :level_height="level_height"
+      :lifts_count="lifts_count">
+    </Shaft>
   </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script>
+  import Shaft from './components/Shaft.vue';
+  import { saveLocalStorage, getLocalStorage } from './api/localStorage';
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+  export default {
+    components: { Shaft },
+    data() {
+      return {
+        levels_count: getLocalStorage('levels') || 5,
+        lifts_count: getLocalStorage('lifts') || 2,
+        level_height: 100,
+      };
+    },
+    watch: {
+      lifts_count(n) {
+        saveLocalStorage('lifts', n);
+      },
+      levels_count(n) {
+        saveLocalStorage('levels', n);
+      },
+    },
+    methods: {
+      handleLevelsCount(e) {
+        this.levels_count = +e.target.value;
+      },
+      handleLiftsCount(e) {
+        this.lifts_count = +e.target.value;
+      },
+    },
+  };
+</script>
 
-@media (min-width: 1024px) {
-  header {
+<style scoped lang="scss">
+  main {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
     flex-wrap: wrap;
+    min-width: 1000px;
   }
-}
+  .input {
+    margin-right: 5%;
+  }
 </style>
