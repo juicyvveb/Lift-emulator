@@ -18,25 +18,34 @@
         placeholder="count of lifts"
         @input="handleLiftsCount" />
     </div>
+
+    <Shaft
+      :levels="levels_count"
+      :level_height="level_height"
+      :lifts_count="lifts_count">
+    </Shaft>
   </main>
 </template>
 
 <script>
+  import Shaft from './components/Shaft.vue';
+  import { saveLocalStorage, getLocalStorage } from './api/localStorage';
 
   export default {
+    components: { Shaft },
     data() {
       return {
-        levels_count:  5,
-        lifts_count: 2,
+        levels_count: getLocalStorage('levels') || 5,
+        lifts_count: getLocalStorage('lifts') || 2,
         level_height: 100,
       };
     },
     watch: {
       lifts_count(n) {
-        console.log(n)
+        saveLocalStorage('lifts', n);
       },
       levels_count(n) {
-        console.log(n)
+        saveLocalStorage('levels', n);
       },
     },
     methods: {
