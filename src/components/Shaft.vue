@@ -14,6 +14,14 @@
       class="shaft__item"
       v-for="(lift, i) in lifts"
       :key="i">
+      <Lift
+        :id="lift.id"
+        :height="level_height"
+        :target="lift.target"
+        :work="!lift.free"
+        @complete="complete"
+        @arrived="handleArrive">
+      </Lift>
     </div>
   </div>
 
@@ -52,6 +60,7 @@
     );
   }
 
+  import Lift from './Lift.vue';
   export default {
     props: {
       levels: Number,
@@ -77,6 +86,9 @@
       targets() {
         return this.lifts.map((el) => el?.target); //the targets of each lift
       },
+    },
+    components: {
+      Lift,
     },
     methods: {
       handleClick(button) {
