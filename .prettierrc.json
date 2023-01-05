@@ -1,1 +1,12 @@
-{}
+{
+  "vueIndentScriptAndStyle": true,
+  "bracketSameLine": true,
+  "singleQuote": true,
+  "singleAttributePerLine": true,
+  "overrides": [{
+    "files": "*.vue",
+    "options": {
+      "parser": "vue"
+    }
+  }]
+}
